@@ -14,8 +14,7 @@ namespace Learn
         ///</summary>
         public static void Main()
         {
-            var db = default(IDatabase);
-            Config(ref db);
+            var db = Config();
             Loop("userKey", db);
         }
         ///<summary>
@@ -54,8 +53,9 @@ namespace Learn
         ///<summary>
         ///Функция получения соединения с БД redis, возвращает значение по ссылке ref db
         ///</summary>
-        public static void Config(ref IDatabase db, string url = "localhost", int port = 6379, int dbIndex = -1)
+        public static IDatabase Config(string url = "localhost", int port = 6379, int dbIndex = -1)
         {
+            var db = default(IDatabase);
             try
             {
                 var config = new ConfigurationOptions();
@@ -67,6 +67,7 @@ namespace Learn
             {
                 Console.WriteLine(e);
             }
+            return db;
         }
 
         ///<summary>
@@ -95,11 +96,10 @@ namespace Learn
         ///</summary>
         public static bool CheckArrInt32(string[] lst)
         {
-            var num = 0;
             for(int i = 0; i < lst.Length; i++)
             {
-                if(Int32.TryParse(lst[i], out num));
-                else return false;
+                if(!Int32.TryParse(lst[i], out int num))
+                    return false;
             }
             return true;
         }
